@@ -67,4 +67,50 @@ def find_club():
         for club in clubs:
             print(f"  ID: {club['id']}, 이름: {club['이름']}, 설립일: {club['설립일']}, 소개: {club['소개']}, 활동분야: {club['활동분야']}")
     else:
-        print("검색된 동아리가 없습니다.")   
+        print("검색된 동아리가 없습니다.")
+
+# 3. 동아리 등록 
+def insert_club():
+    db = connect_to_database()
+    if db is None:
+        return
+
+    name = input("동아리 이름을 입력하세요: ")
+    establishment_date = input("설립일을 입력하세요 (YYYY-MM-DD): ")
+    introduction = input("소개를 입력하세요: ")
+    field = input("활동분야를 입력하세요: ")
+    logo = input("로고 파일 경로를 입력하세요: ")
+
+    cursor = db.cursor()
+    sql = "INSERT INTO 동아리 (이름, 설립일, 소개, 활동분야, 로고) VALUES (%s, %s, %s, %s, %s)"
+    values = (name, establishment_date, introduction, field, logo)
+
+    try:
+        cursor.execute(sql, values)
+        db.commit()
+        print("동아리가 성공적으로 등록되었습니다.")
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+
+    cursor.close()
+    db.close()
+# 4. 학생 목록 조회
+def get_all_students():
+    db = connect_to_database()
+    if db is None:
+        return
+
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM 학생")
+    students = cursor.fetchall()
+    cursor.close()
+    db.close()
+
+    if students:
+        print("학생 목록:")
+        for student in students:
+            print(
+                f"  학번: {student['학번']}, 이름: {student['이름']}, 학과: {student['학과']}, 이메일: {student['이메일']}, 연락처: {student['연락처']}"
+            )
+    else:
+        print("등록된 학생이 없습니다.")  
