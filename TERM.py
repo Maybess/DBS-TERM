@@ -113,4 +113,25 @@ def get_all_students():
                 f"  학번: {student['학번']}, 이름: {student['이름']}, 학과: {student['학과']}, 이메일: {student['이메일']}, 연락처: {student['연락처']}"
             )
     else:
-        print("등록된 학생이 없습니다.")  
+        print("등록된 학생이 없습니다.")
+def main():
+    while True:
+        display_menu()
+        choice = input("메뉴를 선택하세요: ")
+
+        if choice == "1":
+            get_all_clubs()
+        elif choice == "2":
+            find_club()
+        elif choice == "3":
+            insert_club()
+        elif choice == "4":
+            get_all_students()
+        elif choice == "00":
+            print("프로그램을 종료합니다.")
+            break
+        else:
+            print("잘못된 메뉴 선택입니다. 다시 선택하세요.")
+
+if __name__ == "__main__":
+    main()  
